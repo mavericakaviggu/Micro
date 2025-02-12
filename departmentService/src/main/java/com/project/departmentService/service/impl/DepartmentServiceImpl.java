@@ -1,9 +1,13 @@
 package com.project.departmentService.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.project.departmentService.dto.DepartmentDto;
 import com.project.departmentService.entity.Department;
+import com.project.departmentService.exception.DepartmentCodeAlreadyExistsException;
+import com.project.departmentService.exception.ResourceNotFoundException;
 import com.project.departmentService.mapper.DepartmentMapper;
 import com.project.departmentService.repository.DepartmentRepository;
 import com.project.departmentService.service.DepartmentService;
@@ -17,7 +21,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     private DepartmentRepository departmentRepository;
     
     @Override
-    public DepartmentDto saveDepartment(DepartmentDto departmentDto) {
+    public DepartmentDto saveDepartment(DepartmentDto departmentDto) throws DepartmentCodeAlreadyExistsException {
+        Optional<Department> userOptional = departmentRepository.findByDepartmentCode(departmentDto.getDepartmentCode());
+        if (userOptional.isPresent()) {
+            throw new DepartmentCodeAlreadyExistsException("Department code  already exists");
+        }
         //convert department dto to department entity
         Department department = DepartmentMapper.mapToDepartment(departmentDto);
         Department savedDepartment = departmentRepository.save(department);
@@ -30,7 +38,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public DepartmentDto getDepartmentByCode(String code) {
         Department department = departmentRepository.findByDepartmentCode(code)
-                .orElseThrow(() -> new RuntimeException("Department not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Department", "code", code));
         return DepartmentMapper.mapToDepartmentDto(department);   
     }
 }

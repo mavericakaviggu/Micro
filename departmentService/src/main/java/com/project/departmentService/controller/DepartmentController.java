@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.departmentService.dto.DepartmentDto;
+import com.project.departmentService.exception.DepartmentCodeAlreadyExistsException;
 import com.project.departmentService.service.DepartmentService;
 import lombok.AllArgsConstructor;
 
@@ -22,7 +23,7 @@ public class DepartmentController {
 
     //build SAVE department REST API
     @PostMapping()
-    public ResponseEntity<DepartmentDto> saveDepartment(@RequestBody DepartmentDto departmentDto) {
+    public ResponseEntity<DepartmentDto> saveDepartment(@RequestBody DepartmentDto departmentDto) throws DepartmentCodeAlreadyExistsException {
         DepartmentDto savedDepartment = departmentService.saveDepartment(departmentDto);
         // amazonq-ignore-next-line
         return new ResponseEntity<>(savedDepartment, HttpStatus.CREATED);
@@ -35,6 +36,5 @@ public class DepartmentController {
         // amazonq-ignore-next-line
         return new ResponseEntity<>(department, HttpStatus.OK);
     }
-
-
+    
 }

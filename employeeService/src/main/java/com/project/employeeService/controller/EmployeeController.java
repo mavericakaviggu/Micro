@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.employeeService.dto.EmployeeDto;
+import com.project.employeeService.exception.EmailAlreadyExistsException;
 import com.project.employeeService.service.EmployeeService;
 
 @RestController
@@ -22,7 +23,7 @@ public class EmployeeController {
 
     //build save employee REST API
     @PostMapping
-    public ResponseEntity<EmployeeDto> saveEmployee(@RequestBody EmployeeDto employeeDto){
+    public ResponseEntity<EmployeeDto> saveEmployee(@RequestBody EmployeeDto employeeDto) throws EmailAlreadyExistsException{
         EmployeeDto savedEmployee = employeeService.saveEmployee(employeeDto);
         // amazonq-ignore-next-line
         return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
