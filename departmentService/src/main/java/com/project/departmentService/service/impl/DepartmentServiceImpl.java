@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.departmentService.dto.DepartmentDto;
 import com.project.departmentService.entity.Department;
+import com.project.departmentService.mapper.DepartmentMapper;
 import com.project.departmentService.repository.DepartmentRepository;
 import com.project.departmentService.service.DepartmentService;
 
@@ -18,34 +19,18 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public DepartmentDto saveDepartment(DepartmentDto departmentDto) {
         //convert department dto to department entity
-        Department department = new Department(
-            departmentDto.getId(),
-            departmentDto.getDepartmentName(),
-            departmentDto.getDepartmentDescription(),
-            departmentDto.getDepartmentCode()
-        );
+        Department department = DepartmentMapper.mapToDepartment(departmentDto);
         Department savedDepartment = departmentRepository.save(department);
 
         //convert department entity to department dto
-        DepartmentDto savedDepartmentDto = new DepartmentDto(
-            savedDepartment.getId(),
-            savedDepartment.getDepartmentName(),
-            savedDepartment.getDepartmentDescription(),
-            savedDepartment.getDepartmentCode()
-        );
-
+        DepartmentDto savedDepartmentDto = DepartmentMapper.mapToDepartmentDto(savedDepartment);
         return savedDepartmentDto;
     }
 
     @Override
     public DepartmentDto getDepartmentByCode(String code) {
-        Department department = departmentRepository.findByDepartmentCode(code);
-        DepartmentDto departmentDto = new DepartmentDto(
-            department.getId(),
-            department.getDepartmentName(),
-            department.getDepartmentDescription(),
-            department.getDepartmentCode()
-        );
-        return departmentDto;   
+        Department department = departmentRepository.findByDepartmentCode(code)
+                .orElseThrow(() -> new RuntimeException("Department not found"));
+        return DepartmentMapper.mapToDepartmentDto(department);   
     }
 }
