@@ -26,4 +26,6 @@ public class Employee {
     private String lastName;
     @Column(nullable = false, unique = true)
     private String email;
+    //to link with department service
+    private String departmentCode;
 }

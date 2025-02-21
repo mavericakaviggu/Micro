@@ -9,12 +9,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeDto {
+public class DepartmentDto {
 
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    //to link with department service
+    private String departmentName;
+    private String departmentDescription;
     private String departmentCode;
+
+
 }

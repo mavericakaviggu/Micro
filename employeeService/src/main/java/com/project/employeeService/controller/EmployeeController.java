@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.employeeService.dto.APIResponseDto;
 import com.project.employeeService.dto.EmployeeDto;
 import com.project.employeeService.exception.EmailAlreadyExistsException;
 import com.project.employeeService.service.EmployeeService;
@@ -29,11 +30,11 @@ public class EmployeeController {
         return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
     }
     
-    //build get employee REST API
+    //build get employee REST API //updated to include department service value in the response
     @GetMapping("/{id}")
-    public ResponseEntity<EmployeeDto> getEmployee(@PathVariable("id") Long employeeId){
-        EmployeeDto employeeDto = employeeService.getEmployee(employeeId);
-        return ResponseEntity.ok(employeeDto);
+    public ResponseEntity<APIResponseDto> getEmployee(@PathVariable("id") Long employeeId){
+        APIResponseDto apiResponseDto = employeeService.getEmployee(employeeId);
+        return ResponseEntity.ok(apiResponseDto);  
     }
     
 
