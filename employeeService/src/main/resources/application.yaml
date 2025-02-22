@@ -4,6 +4,9 @@ spring:
     username: root
     password: root4977
     driver-class-name: com.mysql.cj.jdbc.Driver
+  # name of the application displayed in the Eureka dashboard
+  application:
+    name: EMPLOYEE-SERVICE
 
   jpa:
     hibernate:
@@ -15,3 +18,9 @@ spring:
 
 server:
   port: 8081
+
+# Eureka server configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

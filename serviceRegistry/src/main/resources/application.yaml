@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: service-registry
+
+server:
+  port: 8761
+
+# by default, eureka server is also eureka client and it will register itself with itself
+# below 4 lines will make this service as only eureka server and not as eureka client
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka

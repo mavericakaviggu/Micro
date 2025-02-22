@@ -21,6 +21,7 @@ import com.project.employeeService.service.EmployeeService;
 
 import lombok.AllArgsConstructor;
 
+@SuppressWarnings("unused")
 @Service
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService{
