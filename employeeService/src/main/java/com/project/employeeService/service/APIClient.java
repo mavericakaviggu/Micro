@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.project.employeeService.dto.DepartmentDto;
 
 //Feign client to call department service
-//name is the name of the service we want to call
-@FeignClient(name = "DEPARTMENTSERVICE")
+//name is the name of the service we want to call (it should be same as how it is displayed in eureka server)
+@FeignClient(name = "DEPARTMENT-SERVICE")
 public interface APIClient {
 
     //build GET department by code REST API http://localhost:8080/api/departments/IT001

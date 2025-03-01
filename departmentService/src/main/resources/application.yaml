@@ -15,7 +15,6 @@ spring:
     # properties:
     #   hibernate:
     #     dialect: org.hibernate.dialect.MySQLDialect
-
 # Eureka server configuration
 eureka:
   client:
