@@ -1,22 +1,35 @@
+# spring:
+#   datasource:
+#      url: jdbc:mysql://localhost:3306/department_db?useSSL=false
+#      username: root
+#      password: root4977
+#      driver-class-name: com.mysql.cj.jdbc.Driver
+#   boot:
+#     message: Welcome to Department Service  
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/department_db?useSSL=false
-    username: root
-    password: root4977
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  # name of the application displayed in the Eureka dashboard
   application:
     name: DEPARTMENT-SERVICE
+  config:
+    import: optional:configserver:http://localhost:8888
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    # properties:
-    #   hibernate:
-    #     dialect: org.hibernate.dialect.MySQLDialect
-# Eureka server configuration
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+# to enable endpoints of spring boot actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+# management:
+#   jpa:
+#      hibernate:
+#        ddl-auto: update
+#      show-sql: true
+#      # properties:
+#      #   hibernate:
+#      #     dialect: org.hibernate.dialect.MySQLDialect
+#  # Eureka server configuration
+# eureka:
+#    client:
+#      service-url:
+#        defaultZone: http://localhost:8761/eureka
+
+#  All the other configs are commented as now they are referred from properties file from github except for the application name

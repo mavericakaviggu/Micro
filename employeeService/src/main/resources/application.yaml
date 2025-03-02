@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: EMPLOYEE-SERVICE
+  config:
+    import: optional:configserver:http://localhost:8888
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+# The rest of the configurations are documented in the github repo "config-server-repo" under the file "employee-service.properties"
