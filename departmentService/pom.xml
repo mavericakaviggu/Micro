@@ -69,6 +69,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- dependency for spring bus (collective trigger option for all MS post config changes ) -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-bus</artifactId>
+		</dependency>
 	</dependencies>
 	<!-- Remember to add DependencyManagement whenever you add a dependency from spring cloud -->
 	<dependencyManagement>

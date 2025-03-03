@@ -79,6 +79,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+			<!-- dependency for spring bus (collective trigger option for all MS post config changes ) -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-bus</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 	</dependencies>
 	<!-- dependency management for open feign  -->
 	<!-- whenever you add dependecy from spring cloud you need to add dependencyManagement -->
