@@ -14,5 +14,34 @@ management:
     web:
       exposure:
         include: '*'
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+
+# circuit breaker configuration
+resilience4j:
+  circuitbreaker:
+    instances:
+      EMPLOYEE-SERVICE:
+        registerHealthIndicator: true
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+
+# Retry configuration
+  retry:
+    instances:
+      EMPLOYEE-SERVICE:
+        maxAttempts: 5
+        waitDuration: 1s
+        # registerHealthIndicator: true
+        
 
 # The rest of the configurations are documented in the github repo "config-server-repo" under the file "employee-service.properties"

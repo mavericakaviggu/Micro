@@ -15,16 +15,17 @@ import org.springframework.web.reactive.function.client.WebClient;
 @EnableDiscoveryClient
 public class EmployeeServiceApplication {
 
+	// configuring rest template as spring bean
 	// @Bean
 	// public RestTemplate	getRestTemplate() {
 	// 	return new RestTemplate();
 	// }
 
 	//configuring web client as spring bean
-	// @Bean
-	// public WebClient webClient() {
-	// 	return WebClient.builder().build();
-	// }
+	@Bean
+	public WebClient webClient() {
+		return WebClient.builder().build();
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(EmployeeServiceApplication.class, args);
