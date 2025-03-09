@@ -5,6 +5,7 @@ import com.project.departmentService.entity.Department;
 
 public class DepartmentMapper {
 
+    // Converting department JPA entity to DTO
     public static DepartmentDto mapToDepartmentDto(Department department){
         DepartmentDto departmentDto = new DepartmentDto(
                 department.getId(),
@@ -15,6 +16,7 @@ public class DepartmentMapper {
         return departmentDto;
     }
     
+    //Converting department DTO into JPA entity
     public static Department mapToDepartment(DepartmentDto departmentDto){
         Department department = new Department(
                 departmentDto.getId(),

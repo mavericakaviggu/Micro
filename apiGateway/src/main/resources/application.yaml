@@ -33,7 +33,7 @@ logging:
               RoutePredicateHandlerMapping: Debug
 
 server:
-  port: 9190
+  port: 9191
 
 # Eureka server configuration
 eureka:

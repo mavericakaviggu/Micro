@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.project.employeeService.dto.APIResponseDto;
 import com.project.employeeService.dto.DepartmentDto;
 import com.project.employeeService.dto.EmployeeDto;
+import com.project.employeeService.dto.OrganizationDto;
 import com.project.employeeService.entity.Employee;
 import com.project.employeeService.exception.EmailAlreadyExistsException;
 import com.project.employeeService.exception.ResourceNotFoundException;
@@ -29,14 +30,21 @@ import lombok.AllArgsConstructor;
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
 
-    @Autowired
+   
     private EmployeeRepository employeeRepository;
-
-    // private RestTemplate restTemplate;
     private WebClient webClient;
     private APIClient apiClient;
+    //private RestTemplate restTemplate;
     //Logger should not be injected as it is a utility, not a managed spring bean 
     private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
+
+    @Autowired
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, WebClient webClient, APIClient apiClient){
+        this.employeeRepository = employeeRepository;
+        this.webClient = webClient;
+        this.apiClient = apiClient;
+    }
+
 
     
     @Override
@@ -55,7 +63,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     //@CircuitBreaker(name = "${spring.application.name}", fallbackMethod = "getDefaultDepartment")
-    @Retry(name = "${spring.application.name}", fallbackMethod = "getDefaultDepartment") 
+    //@Retry(name = "${spring.application.name}", fallbackMethod = "getDefaultDepartment") 
     @Override
     public APIResponseDto getEmployee(Long id) {
         logger.info("inside getEmployeeById() Method");
@@ -66,11 +74,18 @@ public class EmployeeServiceImpl implements EmployeeService{
         // ResponseEntity<DepartmentDto> responseEntity = restTemplate.getForEntity("http://localhost:8080/api/departments/"+employee.getDepartmentCode(), DepartmentDto.class);
         // DepartmentDto departmentDto = responseEntity.getBody();
 
-        //WEB CLIENT
+        //WEB CLIENT to connect with department service
         DepartmentDto departmentDto = webClient.get()
                 .uri("http://localhost:8080/api/departments/"+employee.getDepartmentCode())
                 .retrieve()
                 .bodyToMono(DepartmentDto.class)
+                .block();
+
+        //WEB client to connect with organization service
+        OrganizationDto organizationDto = webClient.get()
+                .uri("http://localhost:8083/api/organizations/"+employee.getOrganizationCode())
+                .retrieve()
+                .bodyToMono(OrganizationDto.class)
                 .block();
 
         //USING FEIGN CLIENT
@@ -79,6 +94,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         APIResponseDto apiResponseDto = new APIResponseDto();
         apiResponseDto.setEmployeeDto(EmployeeMapper.mapToEmployeeDto(employee));
         apiResponseDto.setDepartmentDto(departmentDto);
+        apiResponseDto.setOrganizationDto(organizationDto);
         return apiResponseDto;
     }
 
