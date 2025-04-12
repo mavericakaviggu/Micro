@@ -38,7 +38,6 @@ public class EmployeeServiceImpl implements EmployeeService{
     //Logger should not be injected as it is a utility, not a managed spring bean 
     private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
-    @Autowired
     public EmployeeServiceImpl(EmployeeRepository employeeRepository, WebClient webClient, APIClient apiClient){
         this.employeeRepository = employeeRepository;
         this.webClient = webClient;
