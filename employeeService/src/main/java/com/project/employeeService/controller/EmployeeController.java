@@ -8,6 +8,7 @@ import com.project.employeeService.dto.APIResponseDto;
 import com.project.employeeService.dto.EmployeeDto;
 import com.project.employeeService.exception.EmailAlreadyExistsException;
 import com.project.employeeService.service.EmployeeService;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -31,6 +32,12 @@ public class EmployeeController {
     public ResponseEntity<APIResponseDto> getEmployee(@PathVariable("id") Long employeeId){
         APIResponseDto apiResponseDto = employeeService.getEmployee(employeeId);
         return ResponseEntity.ok(apiResponseDto);  
+    }
+
+    //build get all employees REST API
+    @GetMapping
+    public ResponseEntity<List<EmployeeDto>> getAllEmployees(){
+        return ResponseEntity.ok(employeeService.getAllEmployees());
     }
     
 

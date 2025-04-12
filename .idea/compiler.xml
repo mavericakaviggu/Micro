@@ -10,7 +10,7 @@
         <module name="apiGateway" />
         <module name="configserver" />
       </profile>
-      <profile name="Annotation profile for departmentService" enabled="true">
+      <profile name="Annotation profile for organizationService" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />

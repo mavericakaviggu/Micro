@@ -25,6 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lombok.AllArgsConstructor;
+import java.util.stream.Collectors;
+import java.util.List;
 
 @SuppressWarnings("unused")
 @Service
@@ -95,6 +97,12 @@ public class EmployeeServiceImpl implements EmployeeService{
         apiResponseDto.setDepartmentDto(departmentDto);
         apiResponseDto.setOrganizationDto(organizationDto);
         return apiResponseDto;
+    }
+
+    @Override
+    public List<EmployeeDto> getAllEmployees() {
+        List<Employee> employees = employeeRepository.findAll();
+        return employees.stream().map((employee) -> EmployeeMapper.mapToEmployeeDto(employee)).collect(Collectors.toList());
     }
 
     public APIResponseDto getDefaultDepartment(Long id, Throwable throwable) {
