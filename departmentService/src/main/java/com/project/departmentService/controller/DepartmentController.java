@@ -2,12 +2,7 @@ package com.project.departmentService.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.project.departmentService.dto.DepartmentDto;
 import com.project.departmentService.exception.DepartmentCodeAlreadyExistsException;
@@ -21,6 +16,7 @@ import lombok.AllArgsConstructor;
 // Swagger API documentation(usage of @Tag, @Operation, @ApiResponse)
 // @Tag is used to declare a tag for the API documentation
 @Tag(name = "Department Service - DepartmentController", description = "Department Controller exposes REST APIs for Department Service")
+@CrossOrigin(origins = "http://localhost:3000") // Allow React frontend
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/departments")

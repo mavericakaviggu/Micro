@@ -3,6 +3,7 @@ package com.project.employeeService.service.impl;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -45,8 +46,6 @@ public class EmployeeServiceImpl implements EmployeeService{
         this.webClient = webClient;
         this.apiClient = apiClient;
     }
-
-
     
     @Override
     public EmployeeDto saveEmployee(EmployeeDto employeeDto) throws EmailAlreadyExistsException{
@@ -66,7 +65,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     //@CircuitBreaker(name = "${spring.application.name}", fallbackMethod = "getDefaultDepartment")
     //@Retry(name = "${spring.application.name}", fallbackMethod = "getDefaultDepartment") 
     @Override
-    public APIResponseDto getEmployee(Long id) {
+    public APIResponseDto getEmployeeById(Long id) {
         logger.info("inside getEmployeeById() Method");
         Employee employee = employeeRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Employee","ID",id)
@@ -104,6 +103,37 @@ public class EmployeeServiceImpl implements EmployeeService{
         List<Employee> employees = employeeRepository.findAll();
         return employees.stream().map((employee) -> EmployeeMapper.mapToEmployeeDto(employee)).collect(Collectors.toList());
     }
+
+    @Override
+    public EmployeeDto updateEmployee(Long id, EmployeeDto employeeDto) throws EmailAlreadyExistsException {
+        Employee existingEmployee = employeeRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Employee", "ID", id));
+
+    // Check if email is changed and already exists for another employee
+    if (!existingEmployee.getEmail().equalsIgnoreCase(employeeDto.getEmail())) {
+        Optional<Employee> emailOwner = employeeRepository.findByEmail(employeeDto.getEmail());
+        if (emailOwner.isPresent()) {
+            throw new EmailAlreadyExistsException("Email already exists for another user");
+        }
+    }
+
+    // Update fields
+    existingEmployee.setFirstName(employeeDto.getFirstName());
+    existingEmployee.setLastName(employeeDto.getLastName());
+    existingEmployee.setEmail(employeeDto.getEmail());
+    existingEmployee.setDepartmentCode(employeeDto.getDepartmentCode());
+    existingEmployee.setOrganizationCode(employeeDto.getOrganizationCode());
+
+    Employee updatedEmployee = employeeRepository.save(existingEmployee);
+    return EmployeeMapper.mapToEmployeeDto(updatedEmployee);
+}
+
+@Override
+public void deleteEmployee(Long id) {
+    Employee employee = employeeRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Employee", "ID", id));
+    employeeRepository.delete(employee);
+}
 
     public APIResponseDto getDefaultDepartment(Long id, Throwable throwable) {
         logger.info("inside getDefaultDepartmentMethod");

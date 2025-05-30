@@ -7,7 +7,7 @@ const EMPLOYEE_ID = 4;
 class EmployeeService {
 
     getEmployee(){
-        return axios.get(EMPLOYEE_SERVICE_BASE_URL + "/" + EMPLOYEE_ID);
+        return axios.get(EMPLOYEE_SERVICE_BASE_URL + "/");
     }
 
     getAllEmployees(){
@@ -18,11 +18,11 @@ class EmployeeService {
         return axios.post(EMPLOYEE_SERVICE_BASE_URL, employee);
     }
 
-    getEmployeeById(employeeId){
+    getEmployee(employeeId){
         return axios.get(EMPLOYEE_SERVICE_BASE_URL + '/' + employeeId);
     }
 
-    updateEmployee(employee, employeeId){
+    updateEmployee(employeeId, employee){
         return axios.put(EMPLOYEE_SERVICE_BASE_URL + '/' + employeeId, employee);
     }
 

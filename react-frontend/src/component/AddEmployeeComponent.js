@@ -1,25 +1,91 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import EmployeeService from '../service/EmployeeService';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 function AddEmployeeComponent() {
 
-  const [firstName,setFirstname] = useState('')
-  const [lastName,setLastname] = useState('')
+  const [firstName,setFirstName] = useState('')
+  const [lastName,setLastName] = useState('')
   const [email,setEmail] = useState('') 
   const [departmentCode,setDepartmentCode] = useState('')
   const [organizationCode,setOrganizationCode] = useState('')
 
+  const [errors,setErrors] = useState({
+    firstName: '',
+    lastName:'',
+    email: ''
+  })
+
+  //to get the id from the URL
+  //useParams is a hook that returns an object of key/value pairs of URL parameters
+  const {id} = useParams();
+
   const navigate = useNavigate();
 
-  function saveEmployee(e){
+  useEffect(() => {
+    if(id){
+      EmployeeService.getEmployee(id).then((response) => {
+        setFirstName(response.data.employeeDto.firstName)
+        setLastName(response.data.employeeDto.lastName)
+        setEmail(response.data.employeeDto.email)
+        setDepartmentCode(response.data.employeeDto.departmentCode)
+        setOrganizationCode(response.data.employeeDto.organizationCode)
+      }).catch(error => {
+        console.log(error)
+      })
+    }
+  },[id])
+
+  function saveOrUpdateEmployee(e){
     e.preventDefault()
-    const employee = {firstName,lastName,email,departmentCode,organizationCode}
-    console.log(employee)
-    EmployeeService.createEmployee(employee).then((response) => {
-      console.log(response.data);
-      navigate('/employees');
-  })
+    if(validateForm()){
+      const employee = {firstName,lastName,email,departmentCode,organizationCode}
+  
+      if(id){
+        //update employee
+        EmployeeService.updateEmployee(id, employee).then((response) => {
+          console.log(response.data);
+          navigate('/employees');
+      }).catch(error => {
+        console.error(error)
+      })
+      }else{
+      //create employee      
+        EmployeeService.createEmployee(employee).then((response) => {
+        console.log(response.data);
+        navigate('/employees');
+        }).catch(error => {
+        console.error(error)
+        }  )  
+      }
+}}
+
+  function validateForm(){
+    let valid = true;
+    const errorsCopy = {...errors};
+    if(firstName.trim() === ''){
+      errorsCopy.firstName = 'First Name is required';
+      valid = false;
+    }
+    if(lastName.trim() === ''){
+      errorsCopy.lastName = 'Last Name is required';
+      valid = false;
+    }
+    if(email.trim() === ''){
+      errorsCopy.email = 'Email is required';
+      valid = false;
+  }
+    setErrors(errorsCopy);
+    return valid;
+
+  }
+
+  function pageTitle(){
+    if(id){
+      return <h2 className='text-center'>Update Employee</h2>
+    }else{
+      return <h2 className='text-center'>Add Employee</h2>
+    }
   }
 
   return (
@@ -27,23 +93,28 @@ function AddEmployeeComponent() {
       <br/><br/>
       <div className='row'>
         <div className='card col-md-6 offset-md-3 offset-md-3'>
-          <h2 className='text-center'>Add Employee</h2>
+          {
+            pageTitle()
+                      }
           <div className='card-body'>
             <form>
               <div className='form-group mb-2'>
                 <label className='form-label'>First Name: </label>
-                <input type='text' placeholder='First Name' name='firstName' className='form-control' 
-                value={firstName} onChange={(e) => setFirstname(e.target.value)} />
+                <input type='text' placeholder='First Name' name='firstName' className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
+                value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                {errors.firstName && <div className='invalid-feedback'>{errors.firstName}</div>}
               </div>
               <div className='form-group'>
                 <label> Last Name: </label>
-                <input type='text' placeholder='Last Name' name='lastName' className='form-control' 
-                value={lastName} onChange={(e) => setLastname(e.target.value)} />
+                <input type='text' placeholder='Last Name' name='lastName' className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
+                value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                {errors.lastName && <div className='invalid-feedback'>{errors.lastName}</div>}
               </div>
               <div className='form-group'>
                 <label> Email: </label>
-                <input type='text' placeholder='Email' name='email' className='form-control' 
+                <input type='email' placeholder='Email' name='email' className={`form-control ${errors.email ? 'is-invalid' : ''}`}
                 value={email} onChange={(e) => setEmail(e.target.value)} />
+                {errors.email && <div className='invalid-feedback'>{errors.email}</div>}
               </div>
               <div className='form-group'>
                 <label> Department Code: </label>
@@ -56,8 +127,8 @@ function AddEmployeeComponent() {
                 value={organizationCode} onChange={(e) => setOrganizationCode(e.target.value)} />
               </div>
 
-              <button className='btn btn-success mx-5' onClick={saveEmployee}>Save</button>
-              <button className='btn btn-danger mx-5'>Cancel</button>
+              <button className='btn btn-success mx-5' onClick={saveOrUpdateEmployee}>Save</button>
+              <button className='btn btn-danger mx-5' onClick={()=>navigate('/employees')} >Cancel</button>
             </form>
         </div> 
       </div>

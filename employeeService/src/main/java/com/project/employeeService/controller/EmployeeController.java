@@ -29,8 +29,8 @@ public class EmployeeController {
     
     //build get employee REST API //updated to include department service value in the response
     @GetMapping("/{id}")
-    public ResponseEntity<APIResponseDto> getEmployee(@PathVariable("id") Long employeeId){
-        APIResponseDto apiResponseDto = employeeService.getEmployee(employeeId);
+    public ResponseEntity<APIResponseDto> getEmployeeById(@PathVariable("id") Long employeeId){
+        APIResponseDto apiResponseDto = employeeService.getEmployeeById(employeeId);
         return ResponseEntity.ok(apiResponseDto);  
     }
 
@@ -39,7 +39,20 @@ public class EmployeeController {
     public ResponseEntity<List<EmployeeDto>> getAllEmployees(){
         return ResponseEntity.ok(employeeService.getAllEmployees());
     }
-    
 
+    // Build update employee REST API
+    @PutMapping("/{id}")
+    public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable("id") Long employeeId, @RequestBody EmployeeDto employeeDto) throws EmailAlreadyExistsException{
+    // Optional: Add logic to fetch and validate existence before updating
+        employeeDto.setId(employeeId); // Ensure the ID is set
+        EmployeeDto updatedEmployee = employeeService.updateEmployee(employeeId, employeeDto); // reuse saveEmployee
+        return ResponseEntity.ok(updatedEmployee);
+    }
 
+    // Build delete employee REST API
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteEmployee(@PathVariable("id") Long employeeId) {
+        employeeService.deleteEmployee(employeeId);
+        return ResponseEntity.ok("Employee deleted successfully");
+    }
 }

@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface EmployeeService {
     EmployeeDto saveEmployee(EmployeeDto employeeDto) throws EmailAlreadyExistsException;
-    APIResponseDto getEmployee(Long id);
+    APIResponseDto getEmployeeById(Long id);
     List<EmployeeDto> getAllEmployees();
-    
-
+    EmployeeDto updateEmployee(Long id, EmployeeDto employeeDto) throws EmailAlreadyExistsException;
+    void deleteEmployee(Long id);
 }
