@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import EmployeeService from '../service/EmployeeService';
+import DepartmentService from '../service/DepartmentService';
+import OrganizationService from '../service/OrganizationService';
 import { useNavigate, useParams } from 'react-router-dom'
 
 function AddEmployeeComponent() {
@@ -9,6 +11,8 @@ function AddEmployeeComponent() {
   const [email,setEmail] = useState('') 
   const [departmentCode,setDepartmentCode] = useState('')
   const [organizationCode,setOrganizationCode] = useState('')
+  const [departments, setDepartments] = useState([]);
+  const [organizations, setOrganizations] = useState([]);
 
   const [errors,setErrors] = useState({
     firstName: '',
@@ -23,6 +27,24 @@ function AddEmployeeComponent() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Fetch department list
+    DepartmentService.getDepartments()
+    .then((response) => {
+      setDepartments(response.data);
+    })
+    .catch((error) => {
+      console.error("Error fetching departments", error);
+    });
+
+    // Fetch organization list
+    OrganizationService.getOrganizations()
+    .then((response) => {
+      setOrganizations(response.data);
+    })
+    .catch((error) => {
+      console.error("Error fetching organizations", error);
+    });
+
     if(id){
       EmployeeService.getEmployee(id).then((response) => {
         setFirstName(response.data.employeeDto.firstName)
@@ -118,13 +140,25 @@ function AddEmployeeComponent() {
               </div>
               <div className='form-group'>
                 <label> Department Code: </label>
-                <input type='text' placeholder='Department Code' name='departmentCode' className='form-control' 
-                value={departmentCode} onChange={(e) => setDepartmentCode(e.target.value)} />
+                <select className='form-control' value={departmentCode} onChange={(e) => setDepartmentCode(e.target.value)}>
+                  <option value="">-- Select Department --</option>
+                  {departments.map((dept) => (
+                    <option key={dept.id} value={dept.departmentCode}>
+                  {dept.departmentName} ({dept.departmentCode})
+                  </option>
+                  ))}     
+                </select>
               </div>
               <div className='form-group'>
                 <label> Organization Code: </label>
-                <input type='text' placeholder='Organization Code' name='organizationCode' className='form-control' 
-                value={organizationCode} onChange={(e) => setOrganizationCode(e.target.value)} />
+                <select className='form-control' value={organizationCode} onChange={(e) => setOrganizationCode(e.target.value)}>
+                  <option value="">-- Select Organization --</option>
+                  {organizations.map((org) => (
+                    <option key={org.id} value={org.organizationCode}>
+                  {org.organizationName} ({org.organizationCode})
+                  </option>
+                  ))}     
+                </select>
               </div>
 
               <button className='btn btn-success mx-5' onClick={saveOrUpdateEmployee}>Save</button>

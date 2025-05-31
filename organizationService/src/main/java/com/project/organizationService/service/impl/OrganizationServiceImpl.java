@@ -8,7 +8,9 @@ import com.project.organizationService.service.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrganizationServiceImpl implements OrganizationService {
@@ -33,15 +35,15 @@ public class OrganizationServiceImpl implements OrganizationService {
         return null;
     }
 
-    // @Override
-    // public List<OrganizationDto> getAllOrganizations() {
-    //     List<Organization> organizations = organizationRepository.findAll();
-    //     List<OrganizationDto> organizationDtos = new ArrayList<>();
-    //     organizations.forEach(organization -> {
-    //         organizationDtos.add(OrganizationMapper.mapToOrganizationDto(organization));
-    //     });
-    //     return organizationDtos;
-    // }
+    @Override
+    public List<OrganizationDto> getAllOrganizations() {
+        List<Organization> organizations = organizationRepository.findAll();
+        return organizations.stream()
+            .map(OrganizationMapper::mapToOrganizationDto)  
+            .collect(Collectors.toList());
+        }
+        
+
 
     // @Override
     // public OrganizationDto updateOrganization(OrganizationDto organizationDto) {

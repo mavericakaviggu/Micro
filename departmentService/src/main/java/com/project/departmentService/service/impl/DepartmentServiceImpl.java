@@ -1,6 +1,8 @@
 package com.project.departmentService.service.impl;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors; 
 
 import org.springframework.stereotype.Service;
 
@@ -41,4 +43,12 @@ public class DepartmentServiceImpl implements DepartmentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Department", "code", code));
         return DepartmentMapper.mapToDepartmentDto(department);   
     }
+
+    @Override
+    public List<DepartmentDto> getAllDepartments() {
+        List<Department> departments = departmentRepository.findAll();
+        return departments.stream()
+            .map(DepartmentMapper::mapToDepartmentDto)
+            .collect(Collectors.toList());
+}
 }

@@ -1,17 +1,15 @@
 package com.project.organizationService.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.project.organizationService.service.OrganizationService;
 import com.project.organizationService.dto.OrganizationDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
+
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/organizations")
 public class OrganizationController {
@@ -31,6 +29,13 @@ public class OrganizationController {
     public ResponseEntity<OrganizationDto> getOrganizationByCode(@PathVariable("code") String organizationCode) {
         OrganizationDto organizationDto = organizationService.getOrganizationByCode(organizationCode);
         return ResponseEntity.ok(organizationDto);
+    }
+
+    //build GET organizations REST API http://localhost:8083/api/organizations
+    @GetMapping
+    public ResponseEntity<List<OrganizationDto>> getAllOrganizations() {
+        List<OrganizationDto> organizations = organizationService.getAllOrganizations();
+        return ResponseEntity.ok(organizations);
     }
 
 }

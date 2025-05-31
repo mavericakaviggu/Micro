@@ -9,9 +9,10 @@ import com.project.departmentService.exception.DepartmentCodeAlreadyExistsExcept
 import com.project.departmentService.service.DepartmentService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponse; 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import java.util.List;
 
 // Swagger API documentation(usage of @Tag, @Operation, @ApiResponse)
 // @Tag is used to declare a tag for the API documentation
@@ -44,6 +45,13 @@ public class DepartmentController {
         DepartmentDto department = departmentService.getDepartmentByCode(code);
         // amazonq-ignore-next-line
         return new ResponseEntity<>(department, HttpStatus.OK);
+    }
+
+    //build GET departments REST API http://localhost:8080/api/departments
+    @GetMapping
+    public ResponseEntity<List<DepartmentDto>> getAllDepartments() {
+        List<DepartmentDto> departments = departmentService.getAllDepartments();
+        return ResponseEntity.ok(departments);
     }
     
 }
