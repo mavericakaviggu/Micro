@@ -1,6 +1,7 @@
 package com.project.authService.service.impl;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.project.authService.service.ProfileService;
 import com.project.authService.io.ProfileRequest;
@@ -15,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class ProfileServiceImpl implements ProfileService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public ProfileResponse createProfile(ProfileRequest request) {
@@ -23,9 +25,7 @@ public class ProfileServiceImpl implements ProfileService {
             throw new IllegalArgumentException("Name, email, and password must not be null");
         }
 
-        // Check if the user already exists
-        
-
+        // Check if the user already exists 
         UserEntity newProfile = convertToUserEntity(request);
         if (!userRepository.existsByEmail(request.getEmail())) {
             newProfile = userRepository.save(newProfile);
@@ -35,6 +35,7 @@ public class ProfileServiceImpl implements ProfileService {
         
     }
 
+    //convert entity to response DTO
     private ProfileResponse convertToProfileResponse(UserEntity userEntity) {
         return ProfileResponse.builder()
                 .userId(userEntity.getUserId())
@@ -44,12 +45,13 @@ public class ProfileServiceImpl implements ProfileService {
                 .build();
     }
 
+    // 🔄 Convert request DTO to entity for DB storage
     private UserEntity convertToUserEntity(ProfileRequest request) {
         return UserEntity.builder()
                 .name(request.getName())
                 .userId(java.util.UUID.randomUUID().toString()) // Generate a unique user ID
                 .email(request.getEmail())
-                .password(request.getPassword()) // Password should be hashed in a real application
+                .password(passwordEncoder.encode(request.getPassword())) // Password should be hashed in a real application
                 .isAccountVerified(false)
                 .resetOtpExpireAt(0L) // Set to null initially
                 .resetOtp(null) // Set to null initially

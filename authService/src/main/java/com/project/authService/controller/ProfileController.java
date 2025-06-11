@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1.0")
 public class ProfileController {
 
     private final ProfileService profileService;
@@ -23,7 +22,7 @@ public class ProfileController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ProfileResponse> register(@Valid @RequestBody ProfileRequest request) {
-        // Logic to create a profile
+        // Validate and pass the incoming request to the service layer
         ProfileResponse response = profileService.createProfile(request);
         // send welcone email
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

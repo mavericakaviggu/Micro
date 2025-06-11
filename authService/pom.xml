@@ -37,8 +37,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
-		</dependency>
-	
+		</dependency>	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -65,8 +64,17 @@
 		</dependency>
 		<dependency>
     		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
   			<artifactId>spring-boot-starter-validation</artifactId>
     	</dependency>
+		<dependency>
+    		<groupId>com.h2database</groupId>
+    		<artifactId>h2</artifactId>
+    		<scope>runtime</scope>
+		</dependency>
 		<!-- extra dependency as per gpt -->
 		<dependency>
     		<groupId>io.jsonwebtoken</groupId>
@@ -74,11 +82,15 @@
     		<version>0.9.1</version>
 		</dependency>
 		<dependency>
-    		<groupId>com.h2database</groupId>
-    		<artifactId>h2</artifactId>
-    		<scope>runtime</scope>
+    		<groupId>javax.xml.bind</groupId>
+    		<artifactId>jaxb-api</artifactId>
+    		<version>2.3.1</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

@@ -1,9 +1,6 @@
 package com.project.authService.io;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +18,7 @@ public class ProfileRequest {
     @NotNull(message = "Email cannot be null")
     @NotBlank(message = "Email cannot be blank")    
     private String email;
-    @Min(value = 8, message = "Password must be at least 8 characters long")
+    @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
 
 }

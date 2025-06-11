@@ -1,6 +1,8 @@
 # Server port
 server:
   port: 8084
+  servlet:
+    context-path: /api/v1.0
 
 # Database configuration
 spring:
@@ -25,7 +27,11 @@ spring:
      show-sql: true
 
 # ===================== JWT CONFIG =====================
-app:
-  jwt:
-    secret: MySecretKey1234567890!@#      # You should use a stronger key in prod
-    expiration: 3600000                   # 1 hour in milliseconds (1000 * 60 * 60)
+# app:
+#   jwt:
+#     secret: MySecretKey1234567890!@#      # You should use a stronger key in prod
+#     expiration: 3600000   # 1 hour in milliseconds (1000 * 60 * 60)
+    
+jwt:
+  secret:
+    key: thisisthesecretkeywhichihaveuserforthefirsttime           
