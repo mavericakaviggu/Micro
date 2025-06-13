@@ -1,5 +1,6 @@
 package com.project.authService.config;
 
+import com.project.authService.filter.JwtRequestFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.ProviderManager;
 
 import java.util.List;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration // Marks this class as a Spring configuration class
 @EnableWebSecurity
@@ -27,6 +29,7 @@ public class SecurityConfig {
 
     // Custom user details service that loads user data from DB
     private final AppUserDetailsService userDetailsService;
+    private final JwtRequestFilter jwtRequestFilter; // JWT filter to validate tokens
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,7 +46,10 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 // Disable default logout handler (optional based on implementation)
-                .logout(logout -> logout.disable());
+                .logout(logout -> logout.disable())
+                // Add JWT filter before the default filter
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build(); // Builds and returns the configured security filter chain
     }
 
