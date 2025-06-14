@@ -10,6 +10,8 @@ import com.project.authService.entity.UserEntity;
 import com.project.authService.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 
 @Service
 @AllArgsConstructor
@@ -33,6 +35,16 @@ public class ProfileServiceImpl implements ProfileService {
         }
         throw new ResponseStatusException(HttpStatus.CONFLICT, "User with this email already exists");
         
+    }
+
+    @Override
+    public ProfileResponse getProfile(String email) {
+        // Fetch the user by email
+        UserEntity existingUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found:" + email));
+
+        // Convert the entity to a response DTO
+        return convertToProfileResponse(existingUser);
     }
 
     //convert entity to response DTO

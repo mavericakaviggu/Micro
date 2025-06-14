@@ -18,9 +18,11 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import com.project.authService.service.AppUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.ProviderManager;
-
 import java.util.List;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import com.project.authService.config.CustomAuthenticationEntryPoint;
+
+
 
 @Configuration // Marks this class as a Spring configuration class
 @EnableWebSecurity
@@ -30,6 +32,7 @@ public class SecurityConfig {
     // Custom user details service that loads user data from DB
     private final AppUserDetailsService userDetailsService;
     private final JwtRequestFilter jwtRequestFilter; // JWT filter to validate tokens
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint; // Custom entry point for handling unauthorized access
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -49,6 +52,9 @@ public class SecurityConfig {
                 .logout(logout -> logout.disable())
                 // Add JWT filter before the default filter
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                // Set the custom authentication entry point for unauthorized access
+                http.exceptionHandling(exception -> exception
+                .authenticationEntryPoint(customAuthenticationEntryPoint));
 
         return http.build(); // Builds and returns the configured security filter chain
     }

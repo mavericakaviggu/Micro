@@ -8,6 +8,10 @@ import com.project.authService.io.ProfileRequest;
 import com.project.authService.io.ProfileResponse;
 import com.project.authService.service.ProfileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -24,10 +28,17 @@ public class ProfileController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/test")
+    @GetMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
-    public String test() {
-        return "Auth is working";
+    public ProfileResponse getProfile(@CurrentSecurityContext(expression = "authentication?.name") String email) {
+        // Fetch the profile by ID
+        return profileService.getProfile(email);
     }
+
+    // @GetMapping("/test")
+    // @ResponseStatus(HttpStatus.OK)
+    // public String test() {
+    //     return "Auth is working";
+    // }
 
 }
