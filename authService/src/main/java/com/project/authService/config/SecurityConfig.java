@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .logout(logout -> logout.disable())
                 // Add JWT filter before the default filter
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-                // Set the custom authentication entry point for unauthorized access
+                // Handle exceptions globally using the custom authentication entry point for the requests which are not authenticated
                 http.exceptionHandling(exception -> exception
                 .authenticationEntryPoint(customAuthenticationEntryPoint));
 

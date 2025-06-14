@@ -26,15 +26,13 @@ public class ProfileServiceImpl implements ProfileService {
         if (request.getName() == null || request.getEmail() == null || request.getPassword() == null) {
             throw new IllegalArgumentException("Name, email, and password must not be null");
         }
-
         // Check if the user already exists 
         UserEntity newProfile = convertToUserEntity(request);
         if (!userRepository.existsByEmail(request.getEmail())) {
             newProfile = userRepository.save(newProfile);
             return convertToProfileResponse(newProfile);
         }
-        throw new ResponseStatusException(HttpStatus.CONFLICT, "User with this email already exists");
-        
+        throw new ResponseStatusException(HttpStatus.CONFLICT, "User with this email already exists");        
     }
 
     @Override

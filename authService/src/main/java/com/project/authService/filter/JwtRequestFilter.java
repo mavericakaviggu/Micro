@@ -21,7 +21,7 @@ import com.project.authService.util.JwtUtil;
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    private final JwtUtil jwtUtil;  
+    private final JwtUtil jwtUtil;
     private final AppUserDetailsService appUserDetailsService;
 
     private static final List<String> PUBLIC_URLS = List.of(
@@ -35,7 +35,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String path = request.getServletPath(); // Get the request path
-        // Check if the request path is in the list of public URLs
 
         if (PUBLIC_URLS.contains(path)) {
             // Skip JWT validation for public URLs
@@ -47,7 +46,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String email = null;
 
         //1. check the authorization header for JWT token
-        final String authorizationHeader = request.getHeader("Authorization");
+        String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7); // Extract the JWT token
         }
@@ -67,6 +66,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         //3. Validate the JWT token and set secuirity context
         if (jwt != null ){
+            try{
             email = jwtUtil.extractEmail(jwt);
             if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = appUserDetailsService.loadUserByUsername(email);
@@ -77,6 +77,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
+            }
+        }
+                 catch (Exception e) {
+                System.out.println("JWT validation failed: " + e.getMessage());
+                // Let the entry point handle unauthorized exceptions
             }
         }
         chain.doFilter(request, response); // Continue the filter chain
