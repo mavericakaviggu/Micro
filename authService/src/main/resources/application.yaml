@@ -25,17 +25,17 @@ spring:
      hibernate:
        ddl-auto: update
      show-sql: true
-#  below details are for sending email fetched from brevo.com (masked for security purposes)
-  # mail: 
-  #   host: smtp-relay.brevo.com
-  #   port: 587
-  #   username: ***@smtp-brevo.com
-  #   password: *************
-  #   properties:
-  #     mail.smtp.auth: true
-  #     mail.smtp.starttls.enable: true
-  #     mail.smtp.from: vigneshshet4577@gmail.com
-  #   protocol: smtp
+# #  below details are for sending email fetched from brevo.com (masked for security purposes)
+#   mail: 
+#     host: smtp-relay.brevo.com
+#     port: 587
+#     username: ***@smtp-brevo.com
+#     password: *************
+#     properties:
+#       mail.smtp.auth: true
+#       mail.smtp.starttls.enable: true
+#       mail.smtp.from: vigneshshet4577@gmail.com
+#     protocol: smtp
    
 
 # ===================== JWT CONFIG =====================

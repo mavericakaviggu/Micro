@@ -33,6 +33,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 
 // This controller handles user authentication (login) and JWT token generation.
 @RestController
@@ -88,6 +90,11 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(email, password)
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    @GetMapping("/is-authenticated") 
+    public ResponseEntity<Boolean> isAuthenticated(@CurrentSecurityContext(expression = "authentication?.name") String email) { //This injects the currently authenticated user's email (username) directly into the method parameter.
+        return ResponseEntity.ok(email != null);
     }
 
 }

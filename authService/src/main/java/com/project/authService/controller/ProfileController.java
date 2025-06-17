@@ -31,7 +31,7 @@ public class ProfileController {
             //below line to be used when actual email needs to be sent
             //emailService.sendWelcomeEmail(response.getEmail(), response.getName());
             //below line if for mock email
-            System.out.printf("Mock Email sent to %s. Welcome %s!%n", response.getEmail(), name);
+            System.out.printf("Mock Email sent to %s. Welcome %s!%n", response.getEmail(), response.getName());
         }catch (Exception e) {
             System.err.println("Email sending failed: " + e.getMessage());
         }
