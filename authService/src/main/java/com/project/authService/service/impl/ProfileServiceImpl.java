@@ -102,7 +102,54 @@ public class ProfileServiceImpl implements ProfileService {
 
         // Save the updated user entity
         userRepository.save(existingEntity);
-    }  
+    }
+
+    @Override
+    public void sendOtp(String email) {
+        UserEntity existingEntity = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+
+        if(existingEntity.getIsAccountVerified()!=null && existingEntity.getIsAccountVerified()) {
+            return; // User is already verified, no need to send OTP
+        }
+
+        // Generate and set 6 digit OTP
+        String otp = String.valueOf(ThreadLocalRandom.current().nextInt(100000, 1000000)); // Generates a random 6-digit number
+       
+        //calculate OTP expiration time (current time + 24 hours in milliseconds)
+        long expiryTime = System.currentTimeMillis() + (24 * 60  * 60 * 1000); // OTP expires in 24 hours
+
+        //update the user entity with the OTP and its expiration time
+        existingEntity.setVerifyOtp(otp);
+        existingEntity.setVerifyOtpExpireAt(expiryTime);
+
+        // Save the updated user entity
+        userRepository.save(existingEntity);
+
+        try{
+            emailService.sendOtpEmail(existingEntity.getEmail(), otp);
+        } catch (Exception ex) {
+            throw new RuntimeException("Unable to send verification OTP email: " + ex.getMessage());
+        }
+    }
+
+    @Override
+    public void verifyOtp(String email, String otp) {
+        UserEntity existingUser =  userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+
+        // Check if the OTP matches and is not expired
+        if (!existingUser.getVerifyOtp().equals(otp) || existingUser.getVerifyOtpExpireAt() < System.currentTimeMillis()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid or expired OTP");
+        }
+
+        // Update the user as verified
+        existingUser.setIsAccountVerified(true);
+        existingUser.setVerifyOtp(null);
+        existingUser.setVerifyOtpExpireAt(0L); // Reset OTP and expiration time
+        userRepository.save(existingUser);  
+
+    }
 
     // 🔄 Convert request DTO to entity for DB storage
     private UserEntity convertToUserEntity(ProfileRequest request) {
@@ -118,6 +165,5 @@ public class ProfileServiceImpl implements ProfileService {
                 .verifyOtpExpireAt(0L) // Set to null initially
                 .build();
     }
-
 
 }

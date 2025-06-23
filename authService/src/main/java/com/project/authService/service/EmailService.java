@@ -19,7 +19,7 @@ public class EmailService {
     
     public void sendWelcomeEmail(String toEmail, String name) {
         // Dummy mock implementation (no real mail sending)
-        System.out.printf("Mock Email sent to %s. Welcome %s!%n", toEmail, name);
+        System.out.printf("Mock WELCOME Email sent to %s. Welcome %s!%n", toEmail, name);
 
         // SimpleMailMessage message = new SimpleMailMessage();
         // message.setFrom(fromEmail);
@@ -34,7 +34,7 @@ public class EmailService {
 
     public void sendResetOtpEmail(String toEmail, String otp) {
         // Dummy mock implementation (no real mail sending)
-        System.out.printf("Mock Email sent to %s with OTP: %s%n", toEmail, otp);
+        System.out.printf("Mock RESET OTP Email sent to %s with OTP: %s%n", toEmail, otp);
 
         // SimpleMailMessage message = new SimpleMailMessage();
         // message.setFrom(fromEmail);
@@ -42,6 +42,21 @@ public class EmailService {
         // message.setSubject("Password Reset OTP");
         // message.setText("Your OTP code is: " + otp + "\n\n" +
         //                 "This code is valid for 5 minutes.\n\n" +
+        //                 "Best regards,\n" +
+        //                 "The Team");
+        // mailSender.send(message);
+    }
+
+    public void sendOtpEmail(String toEmail, String otp) {
+        // Dummy mock implementation (no real mail sending)
+        System.out.printf("Mock OTP Email sent to %s with OTP: %s%n", toEmail, otp);
+
+        // SimpleMailMessage message = new SimpleMailMessage();
+        // message.setFrom(fromEmail);
+        // message.setTo(toEmail);
+        // message.setSubject("OTP for Account Verification");
+        // message.setText("Your OTP code is: " + otp + "\n\n" +
+        //                 "This code is valid for 24 hours.\n\n" +
         //                 "Best regards,\n" +
         //                 "The Team");
         // mailSender.send(message);
