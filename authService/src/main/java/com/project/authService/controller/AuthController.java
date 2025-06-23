@@ -1,8 +1,10 @@
 package com.project.authService.controller;
 
 import com.project.authService.io.AuthResponse;
+import com.project.authService.io.ResetPasswordRequest;
 import com.project.authService.service.ProfileService;
 import com.project.authService.util.JwtUtil;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
@@ -105,6 +107,13 @@ public class AuthController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to send reset OTP email: " + ex.getMessage());
         }
     }
-    
 
+    @PostMapping("/reset-password") //POST call "http://localhost:8084/api/v1.0/reset-password"
+    public void resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        try{
+            profileService.resetPassword(request.getEmail(), request.getOtp(), request.getNewPassword());
+        }catch(Exception ex){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to reset password: " + ex.getMessage());
+        }
+    }
 }

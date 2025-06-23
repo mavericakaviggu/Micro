@@ -84,6 +84,26 @@ public class ProfileServiceImpl implements ProfileService {
         } 
     }
 
+    @Override
+    public void resetPassword(String email, String otp, String newPassword) {
+        // Fetch the user by email
+        UserEntity existingEntity = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+
+        // Check if the OTP matches and is not expired
+        if (!existingEntity.getResetOtp().equals(otp) || existingEntity.getResetOtpExpireAt() < System.currentTimeMillis()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid or expired OTP");
+        }
+
+        // Update the password
+        existingEntity.setPassword(passwordEncoder.encode(newPassword));
+        existingEntity.setResetOtp(null);
+        existingEntity.setResetOtpExpireAt(null);
+
+        // Save the updated user entity
+        userRepository.save(existingEntity);
+    }  
+
     // 🔄 Convert request DTO to entity for DB storage
     private UserEntity convertToUserEntity(ProfileRequest request) {
         return UserEntity.builder()
