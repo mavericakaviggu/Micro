@@ -29,7 +29,21 @@ public class EmailService {
         //                 "Thank you for signing up! We're excited to have you on board.\n\n" +
         //                 "Best regards,\n" +
         //                 "The Team");
-         
+        // mailSender.send(message);
+    }
+
+    public void sendResetOtpEmail(String toEmail, String otp) {
+        // Dummy mock implementation (no real mail sending)
+        System.out.printf("Mock Email sent to %s with OTP: %s%n", toEmail, otp);
+
+        // SimpleMailMessage message = new SimpleMailMessage();
+        // message.setFrom(fromEmail);
+        // message.setTo(toEmail);
+        // message.setSubject("Password Reset OTP");
+        // message.setText("Your OTP code is: " + otp + "\n\n" +
+        //                 "This code is valid for 5 minutes.\n\n" +
+        //                 "Best regards,\n" +
+        //                 "The Team");
         // mailSender.send(message);
     }
 

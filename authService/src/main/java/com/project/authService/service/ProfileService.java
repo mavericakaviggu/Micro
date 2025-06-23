@@ -12,4 +12,6 @@ public interface ProfileService {
     public ProfileResponse createProfile(ProfileRequest request);
 
     public ProfileResponse getProfile(String email);
+
+    void sendResetOtp(String email);
 }

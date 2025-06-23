@@ -1,5 +1,6 @@
 package com.project.authService.service.impl;
 
+import com.project.authService.service.EmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import com.project.authService.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 @Service
@@ -19,6 +21,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Override
     public ProfileResponse createProfile(ProfileRequest request) {
@@ -53,6 +56,32 @@ public class ProfileServiceImpl implements ProfileService {
                 .email(userEntity.getEmail())
                 .isAccountVerified(userEntity.getIsAccountVerified())
                 .build();
+    }
+
+    @Override
+    public void sendResetOtp(String email) {
+        // Fetch the user by email
+        UserEntity existingEntity = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+
+        // Generate and set 6 digit OTP
+        String otp = String.valueOf(ThreadLocalRandom.current().nextInt(100000, 1000000)); // Generates a random 6-digit number
+       
+        //calculate OTP expiration time (current time + 5 minutes in milliseconds)
+        long expiryTime = System.currentTimeMillis() + (5 * 60 * 1000); // OTP expires in 5 minutes
+
+        // Update the user entity with the OTP and its expiration time
+        existingEntity.setResetOtp(otp);
+        existingEntity.setResetOtpExpireAt(expiryTime);
+
+        // Save the updated user entity
+        userRepository.save(existingEntity);
+
+        try{
+            emailService.sendResetOtpEmail(existingEntity.getEmail(), otp);
+        }catch(Exception ex){
+            throw new RuntimeException("Unable to send reset OTP email: " + ex.getMessage());
+        } 
     }
 
     // 🔄 Convert request DTO to entity for DB storage

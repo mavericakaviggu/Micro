@@ -1,10 +1,11 @@
 package com.project.authService.controller;
 
 import com.project.authService.io.AuthResponse;
+import com.project.authService.service.ProfileService;
 import com.project.authService.util.JwtUtil;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 import java.time.Duration;
@@ -17,9 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 import com.project.authService.io.AuthRequest;
 import com.project.authService.service.AppUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +32,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.web.server.ResponseStatusException;
 
 // This controller handles user authentication (login) and JWT token generation.
 @RestController
@@ -44,6 +43,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final AppUserDetailsService appUserDetailsService;
+    private final ProfileService profileService;
 
     @PostMapping("/login") //POST /login endpoint to authenticate a user and return a JWT token in an HTTP-only cookie.
     public ResponseEntity<?> login(@RequestBody AuthRequest request){
@@ -96,5 +96,15 @@ public class AuthController {
     public ResponseEntity<Boolean> isAuthenticated(@CurrentSecurityContext(expression = "authentication?.name") String email) { //This injects the currently authenticated user's email (username) directly into the method parameter.
         return ResponseEntity.ok(email != null);
     }
+
+    @PostMapping("/send-reset-otp") //POST call "http://localhost:8084/api/v1.0/send-reset-otp?email=veenanayak@gmail.com"
+    public void sendResetOtp(@RequestParam String email) {
+        try{
+            profileService.sendResetOtp(email);
+        }catch(Exception ex){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to send reset OTP email: " + ex.getMessage());
+        }
+    }
+    
 
 }
