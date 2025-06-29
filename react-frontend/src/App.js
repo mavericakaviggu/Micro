@@ -11,6 +11,7 @@ import ResetPassword from './pages/ResetPassword';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Menubar from './component/Menubar';
+import Home from './pages/Home';
 
 function App() {
   return (
@@ -18,10 +19,9 @@ function App() {
     
 
       <ToastContainer/>
-      <HeaderComponent />
         <Routes>
           {/* <Route path="/" element={<ListEmployeeComponent />}></Route> */}
-          <Route path="/" element={<Menubar />}></Route>
+          <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/email-verify" element={<EmailVerify />}></Route>
           <Route path="/reset-password" element={<ResetPassword />}></Route>
