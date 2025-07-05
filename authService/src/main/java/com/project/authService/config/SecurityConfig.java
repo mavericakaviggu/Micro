@@ -74,7 +74,7 @@ public class SecurityConfig {
     // Custom CORS configuration (allows frontend app to talk to backend)
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:8084")); // Allow requests from this origin (your frontend running on port 8084)
+        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Allow requests from this origin (your frontend running on port 8084)
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")); // Allow specified HTTP methods
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));  // Allow headers required for JWT-based auth
         configuration.setAllowCredentials(true); // Allow credentials (cookies, auth headers, etc.)
