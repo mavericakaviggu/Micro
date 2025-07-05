@@ -14,7 +14,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const {backendURL} = useContext(AppContext);  //importing backend URL from context
+    const {backendURL, setIsLoggedIn, getUserData} = useContext(AppContext);  //importing backend URL from context
 
 
     const onSubmitHandler = async (e) => {
@@ -38,6 +38,20 @@ const Login = () => {
 
             }else{
                 //login user
+                const response = await axios.post(`${backendURL}/login`, {email, password});
+                if(response.status === 200){
+                    const token = response.data.token; //get token from response
+                    localStorage.setItem("token", token); //store token in local storage
+                    //user logged in successfully
+                    setIsLoggedIn(true); //set logged in state to true
+                    toast.success("Login successful!");
+                    await getUserData(); //fetch user data after login
+                    navigate("/");
+                    //setUserData(userData); //uncomment if you have setUserData in context
+            }else{
+                    //handle error
+                    toast.error("Invalid email or password. Please try again.");
+                }
             }
         }catch(error){
             toast.error(error.response?.data?.message || "An error occurred. Please try again.");

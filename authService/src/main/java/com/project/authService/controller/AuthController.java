@@ -4,6 +4,7 @@ import com.project.authService.io.AuthResponse;
 import com.project.authService.io.ResetPasswordRequest;
 import com.project.authService.service.ProfileService;
 import com.project.authService.util.JwtUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -139,6 +140,18 @@ public class AuthController {
         }catch(Exception ex){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to verify OTP: " + ex.getMessage());
         }
+    }
+
+    @PostMapping("/logout") //POST /logout endpoint to clear the JWT cookie and log out the user.
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("jwt", "")
+                .httpOnly(true)
+                .secure(false) // Set secure to false for local development; set to true in production
+                .path("/")
+                .maxAge(0) // Set cookie expiration to 0 to delete it
+                .sameSite("Strict")
+                .build();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("Logged out successfully");
     }
 
 }
