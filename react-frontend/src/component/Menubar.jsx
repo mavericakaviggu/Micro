@@ -31,11 +31,28 @@ const Menubar = () => {
       if(response.status === 200){
         setIsLoggedIn(false); //set logged in state to false
         setUserData(false); //clear user data
-        navigate("/login");
+        navigate("/"); //redirect to login page");
       }}
       catch(error){
         toast.error(error.response?.data?.message || "An error occurred while logging out.");
       }}
+
+  const sendVerificationOtp = async () => {
+    try {
+      axios.defaults.withCredentials = true; // to allow cookies to be sent with the request
+      const response = await axios.post(`${backendURL}/send-otp`,null,{
+                withCredentials: true,
+            });
+      if (response.status === 200) {
+        navigate("/email-verify"); // Redirect to email verification page
+        toast.success("Verification OTP has been sent successfully!");
+      } else {
+        toast.error("Failed to send verification OTP.");
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "An error occurred while sending verification email.");
+    }
+  } 
 
   return (
     <nav className="navbar fixed-top bg-white px-5 py-4 d-flex justify-between items-center shadow-md">
@@ -52,7 +69,7 @@ const Menubar = () => {
           {dropdownOpen && (
           <div className="position-absolute rounded bg-white shadow-lg" style={{ top: "50px", right: "0", zIndex: 100 }}>
             {!userData.isAccountVerified && (
-            <div className="dropdown-item py-1 px-2" style={{ cursor: "pointer" }} onClick={() => navigate('/email-verify')}>
+            <div className="dropdown-item py-1 px-2" style={{ cursor: "pointer" }} onClick={sendVerificationOtp}>
               Verify email
             </div>
             )}

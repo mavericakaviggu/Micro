@@ -8,7 +8,7 @@ import { toast } from "react-toastify"; //importing toast for notifications
 
 
 const Login = () => {
-    const [isCreateAccount, setIsCreateAccount] = useState(true); //to toggle between login and create account forms
+    const [isCreateAccount, setIsCreateAccount] = useState(false); //to toggle between login and create account forms
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
