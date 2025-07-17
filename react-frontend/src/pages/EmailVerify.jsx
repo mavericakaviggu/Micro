@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { AppContext } from "../context/AppContext"; // Importing AppContext to access user data if needed
 import axios from "axios";
 import { toast } from "react-toastify"; // Importing toast for notifications
@@ -65,6 +65,9 @@ const EmailVerify = () => {
         }
     }
 
+    useEffect(() => {
+        isLoggedIn && userData && userData?.isAccountVerified && navigate("/"); // Redirect to home page if user is already verified his email
+        }, [isLoggedIn, userData]);
 
 
     return (
