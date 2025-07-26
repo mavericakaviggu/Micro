@@ -12,6 +12,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Menubar from './component/Menubar';
 import Home from './pages/Home';
+import ProtectedRoute from './component/ProtectedRoute';
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
           <Route path="/email-verify" element={<EmailVerify />}></Route>
           <Route path="/reset-password" element={<ResetPassword />}></Route>
-          <Route path="/employees" element={<ListEmployeeComponent />}></Route>
+          <Route path="/employees" element={<ProtectedRoute> <ListEmployeeComponent /></ProtectedRoute>}></Route>
           <Route path="/add-employee" element={<AddEmployeeComponent />}></Route>
           <Route path="/edit-employee/:id" element={<AddEmployeeComponent />}></Route>
         </Routes>

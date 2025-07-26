@@ -18,7 +18,7 @@ public class ProfileRequest {
     @NotNull(message = "Email cannot be null")
     @NotBlank(message = "Email cannot be blank")    
     private String email;
-    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @Size(min = 3, message = "Password must be at least 3 characters long")
     private String password;
 
 }
