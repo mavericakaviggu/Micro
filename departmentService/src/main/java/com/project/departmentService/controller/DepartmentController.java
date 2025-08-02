@@ -17,7 +17,7 @@ import java.util.List;
 // Swagger API documentation(usage of @Tag, @Operation, @ApiResponse)
 // @Tag is used to declare a tag for the API documentation
 @Tag(name = "Department Service - DepartmentController", description = "Department Controller exposes REST APIs for Department Service")
-@CrossOrigin(origins = "http://localhost:3000") // Allow React frontend
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true") // Allow React frontend
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/departments")

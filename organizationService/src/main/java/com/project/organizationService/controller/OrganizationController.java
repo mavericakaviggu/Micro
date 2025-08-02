@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/organizations")
 public class OrganizationController {

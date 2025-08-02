@@ -162,7 +162,7 @@ function AddEmployeeComponent() {
               </div>
 
               <button className='btn btn-success mx-5' onClick={saveOrUpdateEmployee}>Save</button>
-              <button className='btn btn-danger mx-5' onClick={()=>navigate('/employees')} >Cancel</button>
+              <button type='button' className='btn btn-danger mx-5' onClick={()=>navigate('/employees')} >Cancel</button>
             </form>
         </div> 
       </div>

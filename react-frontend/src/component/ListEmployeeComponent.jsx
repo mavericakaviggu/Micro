@@ -41,9 +41,8 @@ const ListEmployeeComponent = () => {
     }
 
   return (
-    <div className="container">
+    <div className="container" style={{ paddingTop: '100px' }}>
       <h2 className="text-centre">List of Employees</h2>
-      <button className="btn btn-primary my-2" style={{marginBottom: "10px"}} onClick={addNewEmployee}>Add Employee</button>
       <table className="table table-striped table-bordered">
         <thead>
             <tr>
@@ -75,6 +74,7 @@ const ListEmployeeComponent = () => {
             }
         </tbody>
       </table>
+      <button className="btn btn-primary my-2" style={{marginBottom: "10px"}} onClick={addNewEmployee}>Add Employee</button>
     </div>
   )
 }

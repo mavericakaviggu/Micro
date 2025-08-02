@@ -5,7 +5,9 @@ const DEPARTMENT_SERVICE_BASE_URL = "http://localhost:8080/api/departments"; // 
 class DepartmentService {
 
     getDepartments() {
-        return axios.get(DEPARTMENT_SERVICE_BASE_URL);
+        return axios.get(DEPARTMENT_SERVICE_BASE_URL, {
+        withCredentials: true
+        });
     }
 }
 

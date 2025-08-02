@@ -5,7 +5,9 @@ const ORGANIZATION_SERVICE_BASE_URL = "http://localhost:8083/api/organizations";
 class OrganizationService {
 
     getOrganizations() {
-        return axios.get(ORGANIZATION_SERVICE_BASE_URL);
+        return axios.get(ORGANIZATION_SERVICE_BASE_URL,{
+            withCredentials: true
+        });
     }
 }
 

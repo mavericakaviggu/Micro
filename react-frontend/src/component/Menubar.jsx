@@ -56,8 +56,8 @@ const Menubar = () => {
 
   return (
     <nav className="navbar fixed-top bg-white px-5 py-4 d-flex justify-between items-center shadow-md">
-      <div className="d-flex align-items-center gap-2">
-        <img src={assets.logo} alt=" Logo" />
+      <div className="d-flex align-items-center gap-2" style={{ cursor: "pointer" }} onClick={() => navigate("/employees")}>
+        <img src={assets.logo} alt=" Logo" style={{ width: "80px", height: "80px"}} />
         <span className="fw-bold fs-4 text-dark">Authify</span>
       </div>
 
