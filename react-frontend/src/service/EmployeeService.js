@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-const EMPLOYEE_SERVICE_BASE_URL = "http://localhost:8081/api/employees";
-
-const EMPLOYEE_ID = 4;
+const EMPLOYEE_SERVICE_BASE_URL = `${process.env.REACT_APP_EMPLOYEE_SERVICE_BASE_URL}`; // Using the .env file for the base variable
 
 class EmployeeService {
 

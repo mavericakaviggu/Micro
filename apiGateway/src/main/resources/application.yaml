@@ -1,6 +1,6 @@
 spring:
   application:
-    name: APIGATEWAY
+    name: API-GATEWAY
 
 # Manual routing for the API Gateway
   cloud:
@@ -46,7 +46,8 @@ logging:
               RoutePredicateHandlerMapping: Debug
 
 server:
-  port: 9191
+  port: 9191 
+  # cannot be fetched from /env file as it is not a spring property
 
 # Eureka server configuration
 eureka:
